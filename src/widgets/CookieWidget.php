@@ -34,7 +34,7 @@ class CookieWidget extends Widget
 
     const DEFAULT_DOMAIN = '/';
 
-    const DEFAULT_PALETTE = [
+    public $DEFAULT_PALETTE = [
         'popup' => [
             'background' => '#000',
         ],
@@ -163,7 +163,7 @@ class CookieWidget extends Widget
 
         if ($this->paletteConfig !== false) {
             if (empty(ArrayHelper::getValue($this->pluginOptions, 'palette'))) {
-                $this->pluginOptions['palette'] = self::DEFAULT_PALETTE;
+                $this->pluginOptions['palette'] = $this->DEFAULT_PALETTE;
             }
 
             if (!empty($this->paletteConfig)) {
