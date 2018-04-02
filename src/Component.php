@@ -15,7 +15,7 @@ class Component extends \yii\base\Component
     const STATUS_DISMISSED = 'dismiss';
     const STATUS_ALLOWED = 'allow';
 
-    const STATUSES = [
+    public $STATUSES = [
         self::STATUS_DENIED,
         self::STATUS_DISMISSED,
         self::STATUS_ALLOWED,
@@ -25,7 +25,7 @@ class Component extends \yii\base\Component
     const COMPLIANCE_TYPE_OPT_IN = 'opt-in';
     const COMPLIANCE_TYPE_OPT_OUT = 'opt-out';
 
-    const COMPLIANCE_TYPES = [
+    public $COMPLIANCE_TYPES = [
         self::COMPLIANCE_TYPE_INFO,
         self::COMPLIANCE_TYPE_OPT_IN,
         self::COMPLIANCE_TYPE_OPT_OUT,
@@ -37,7 +37,7 @@ class Component extends \yii\base\Component
     const CATEGORY_PERFORMANCE  = 'performance';
     const CATEGORY_BEHAVIOR     = 'behavior';
 
-    const CATEGORIES = [
+    public $CATEGORIES = [
         self::CATEGORY_SESSION,
         self::CATEGORY_ADS,
         self::CATEGORY_USAGE_HELPER,
@@ -45,7 +45,7 @@ class Component extends \yii\base\Component
         self::CATEGORY_BEHAVIOR,
     ];
 
-    const CATEGORIES_REQUIRED = [
+    private $CATEGORIES_REQUIRED = [
         self::CATEGORY_SESSION,
         self::CATEGORY_USAGE_HELPER,
     ];
@@ -102,7 +102,7 @@ class Component extends \yii\base\Component
      */
     public function init()
     {
-        if (!in_array($this->complianceType, self::COMPLIANCE_TYPES)) {
+        if (!in_array($this->complianceType, $this->COMPLIANCE_TYPES)) {
             throw new InvalidArgumentException('Invalid value in "type" property!');
         }
 
@@ -127,7 +127,7 @@ class Component extends \yii\base\Component
      */
     public function getCategories()
     {
-        $categories = ArrayHelper::merge(self::CATEGORIES, array_keys($this->extraCategories));
+        $categories = ArrayHelper::merge($this->CATEGORIES, array_keys($this->extraCategories));
 
         return array_diff($categories, $this->disabledCategories);
     }
@@ -284,7 +284,7 @@ class Component extends \yii\base\Component
                 $data = [];
             }
 
-            if (in_array($id, self::CATEGORIES)) {
+            if (in_array($id, $this->CATEGORIES)) {
                 throw new InvalidConfigException('You cannot use "' . $id . '" default category in "extraCategories" property items.');
             }
 
@@ -306,13 +306,13 @@ class Component extends \yii\base\Component
 
     private function normalizeDisabledCategories()
     {
-        foreach (self::CATEGORIES_REQUIRED as $requiredCategory) {
+        foreach ($this->CATEGORIES_REQUIRED as $requiredCategory) {
             ArrayHelper::removeValue($this->disabledCategories, $requiredCategory);
         }
     }
 
     public function isRequiredToAllow($category)
     {
-        return in_array($category, self::CATEGORIES_REQUIRED);
+        return in_array($category, $this->CATEGORIES_REQUIRED);
     }
 }
